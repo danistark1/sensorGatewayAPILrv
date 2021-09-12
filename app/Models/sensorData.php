@@ -4,7 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
+/**
+ * @method static findOrFail(int $id)
+ * @method static create(array $all)
+ */
 class sensorData extends Model
 {
     use HasFactory;
@@ -13,15 +19,17 @@ class sensorData extends Model
         'name',
         'value',
         'location',
-        'sensorID'
+        'sensorID',
+        'sensor_type_id'
         ];
-
-    /**
-     * One-to-one relationship: Each sensor can have one type.
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\HasOne
-     */
-    public function type() {
-        return $this->hasOne('App\Models\sensorType');
-    }
+//
+//    /**
+//     * One-to-one relationship: Each sensor can have one type.
+//     *
+//     * @return BelongsTo
+//     */
+//    public function sensorType(): BelongsTo
+//    {
+//        return $this->hasOne('App\Models\sensorType', 'sensor_type_id');
+//    }
 }

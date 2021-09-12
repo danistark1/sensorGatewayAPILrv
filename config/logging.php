@@ -35,10 +35,17 @@ return [
     */
 
     'channels' => [
+
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['customMonolog', 'single'],
             'ignore_exceptions' => false,
+        ],
+        'customMonolog' => [
+            'driver' => 'custom',
+            'handler' => App\Logging\MSqlLoggingHandler::class,
+            'via' => App\Logging\MsqlCustomLogger::class,
+            'level' => 'debug',
         ],
 
         'single' => [
