@@ -25,7 +25,7 @@ class configController extends Controller
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function getConfigByKey(string $lookupKey) {
-        $value = Cache::store('file')->has("cache_$lookupKey");
+        $value = Cache::store('file')->get("cache_$lookupKey");
         if (!$value) {
             $valueDb = sensorConfig::where('key', '=', $lookupKey)->value("value");
             if (!$valueDb) {
@@ -45,7 +45,7 @@ class configController extends Controller
      * @param string $lookupValue
      */
     public function getConfigByValue(string $lookupValue) {
-        $value = Cache::store('file')->has("cache_$lookupValue");
+        $value = Cache::store('file')->get("cache_$lookupValue");
         if (!$value) {
             $valueDb = sensorConfig::where('value', '=', $lookupValue)->value("key");
             if (!$valueDb) {

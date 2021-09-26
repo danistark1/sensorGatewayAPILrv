@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\SensorDataSaved;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\sensorData;
@@ -40,11 +41,19 @@ class sensorController extends Controller
      */
     public function store(Request $request): JsonResponse
     {
+        $request->validate([
+            'name' => 'required',
+            'value' => 'required',
+            'location' => 'required',
+            'sensorID' => 'required',
+        ]);
        // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);\
         $sensorData = sensorData::create($request->all());
-        $typeID = $request->get('sensor_type_id');
-        $sensorType = sensorType::findOrFail($typeID);
+//        $typeID = $request->get('sensor_type_id');
+//        $sensorType = sensorType::findOrFail($typeID);
        // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);
+
+        event(new SensorDataSaved($sensorData));
         return response()->json($sensorData, 201);
     }
 
@@ -57,7 +66,7 @@ class sensorController extends Controller
     public function show(int $id): Response
     {
         $sensorData = sensorData::findOrFail($id);
-        return $sensorData->sensorType;
+        return $sensorData;
     }
 
     /**
