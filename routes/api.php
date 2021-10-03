@@ -32,5 +32,5 @@ Route::get('/sensorgateway/lrv/{id}', [\App\Http\Controllers\sensorController::c
 // Config Routes
 
 Route::get('/sensorgateway/lrv/config/get/{lookupKey}', [\App\Http\Controllers\configController::class,'getConfigByKey']);
-Route::get('/sensorgateway/lrv/config/flush/all', [\App\Http\Controllers\configController::class,'flushCache']);
-Route::get('/sensorgateway/lrv/config/flush/key/{lookupKey}', [\App\Http\Controllers\configController::class,'deleteCacheKey']);
+Route::get('/sensorgateway/lrv/config/flush/all', [\App\Http\Controllers\configController::class,'clear']);
+Route::get('/sensorgateway/lrv/config/flush/key/{lookupKey}', [\App\Http\Controllers\configController::class,'delete']);

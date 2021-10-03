@@ -22,8 +22,8 @@ class CreateSensorLogsTable extends Migration
             $table->string("channel");
             $table->dateTime("record_datetime");
             $table->longText("extra");
-            $table->string("remote_address");
-            $table->string("user_agent");
+            $table->string("remote_address")->nullable();
+            $table->string("user_agent")->nullable();
             $table->timestamps();
         });
     }

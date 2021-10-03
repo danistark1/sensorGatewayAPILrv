@@ -2,6 +2,7 @@
 
 namespace App\Mail;
 
+use http\Env;
 use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
@@ -33,7 +34,7 @@ class EmailNotification extends Mailable {
     public function build(configController $configController) {
         return $this->subject('Test email')
             ->view($this->view)
-            ->from($configController->getConfigByKey('email_from'))
-            ->to(($configController->getConfigByKey('email_to')));
+            ->from($configController->getConfigByKey('email_from') ?? env("MAIL_FROM_ADDRESS"))
+            ->to($configController->getConfigByKey('email_to') ?? env("MAIL_TO_ADDRESS"));
     }
 }

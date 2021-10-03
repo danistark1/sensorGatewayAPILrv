@@ -22,6 +22,8 @@ class sensorData extends Model
         'sensorID',
         'sensor_type_id'
         ];
+
+    protected $casts = ["value" => "array"];
 //
 //    /**
 //     * One-to-one relationship: Each sensor can have one type.

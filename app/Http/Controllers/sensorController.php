@@ -3,19 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Events\SensorDataSaved;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use App\Models\sensorData;
+
 use App\Models\sensorType;
+use App\Models\sensorData;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 
 class sensorController extends Controller
 {
     /**
      * Display a listing of the resource.
-     *
-     * @return Response
      */
     public function index()
     {
@@ -43,16 +42,14 @@ class sensorController extends Controller
     {
         $request->validate([
             'name' => 'required',
-            'value' => 'required',
+            'value' => 'required|array',
             'location' => 'required',
             'sensorID' => 'required',
         ]);
-       // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);\
-        $sensorData = sensorData::create($request->all());
-//        $typeID = $request->get('sensor_type_id');
-//        $sensorType = sensorType::findOrFail($typeID);
-       // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);
 
+       // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);
+        $sensorData = sensorData::create($request->all());
+        // Trigger email event.
         event(new SensorDataSaved($sensorData));
         return response()->json($sensorData, 201);
     }
@@ -61,12 +58,12 @@ class sensorController extends Controller
      * Display the specified resource.
      *
      * @param int $id
-     * @return Response
+     * @return
      */
-    public function show(int $id): Response
+    public function show(int $id)
     {
         $sensorData = sensorData::findOrFail($id);
-        return $sensorData;
+        return response()->json($sensorData, 200);
     }
 
     /**

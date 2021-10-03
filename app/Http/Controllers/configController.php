@@ -2,19 +2,47 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Cache;
 use App\Models\sensorConfig;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
+/**
+ * Config API Controller.
+ */
 class configController extends Controller
 {
     /**
-     * Get all available config Keys.
-     * This will be used for a drop-down ui to update configs.
+     * Delete a single cache entry.
      *
+     * @param string $key
+     * @return bool
      */
-    public function getAllKeys(): Response {
+    public function delete($key)
+    {
+        Log::channel('customMonolog')->debug("Cache with key $key was Deleted.");
+        return Cache::forget($key);
+    }
+
+    /**
+     * Delete cache storage.
+     *
+     * @return bool
+     */
+    public function clear()
+    {
+        Log::channel('customMonolog')->debug("Cache Cleared.");
+        return Cache::flush();
+    }
+
+    /**
+     * Check if cache is set.
+     *
+     * @param string $key
+     * @return bool
+     */
+    public function has($key): bool
+    {
+        return Cache::has($key);
     }
 
     /**
@@ -25,14 +53,15 @@ class configController extends Controller
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function getConfigByKey(string $lookupKey) {
-        $value = Cache::store('file')->get("cache_$lookupKey");
-        if (!$value) {
+        $cacheKey = "cache_$lookupKey";
+        $value = Cache::store('file')->get($cacheKey);
+        if ($value === null) {
             $valueDb = sensorConfig::where('key', '=', $lookupKey)->value("value");
             if (!$valueDb) {
                 return response("$lookupKey is not found.", 404);
             } else {
                 // Cache the config.
-                Cache::put("cache_$lookupKey", $valueDb, 525600);
+                Cache::put($cacheKey, $valueDb, 525600);
                 $value = $valueDb;
             }
         }
@@ -45,34 +74,18 @@ class configController extends Controller
      * @param string $lookupValue
      */
     public function getConfigByValue(string $lookupValue) {
-        $value = Cache::store('file')->get("cache_$lookupValue");
-        if (!$value) {
+        $cacheKey = "cache_$lookupValue";
+        $value = Cache::store('file')->get($cacheKey);
+        if ($value === null) {
             $valueDb = sensorConfig::where('value', '=', $lookupValue)->value("key");
             if (!$valueDb) {
                 return response("$lookupValue is not found.", 404);
             } else {
                 // Cache the config.
-                Cache::put("cache_$lookupValue", $valueDb, 525600);
+                Cache::put($cacheKey, $valueDb, 525600);
                 $value = $valueDb;
             }
         }
         return $value;
-    }
-
-    /**
-     *
-     * @param string $lookupKey
-     */
-    public function deleteCacheKey(string $lookupKey) {
-        Cache::forget("cache_$lookupKey");
-    }
-
-    /**
-     *
-     */
-    public function flushCache() {
-        Cache::flush();
-        Log::channel('customMonolog')->debug("Cache Cleared.");
-
     }
 }

@@ -16,10 +16,10 @@ class CreateSensorDataTable extends Migration
         Schema::create('sensor_data', function (Blueprint $table) {
             $table->id();
             $table->string('name')->index('sensorName');
-            $table->string('value');
+            $table->json('value');
             $table->string('location')->nullable();
             $table->string('sensorID')->index('sensorID'); // Hardware device id.
-            $table->longText('extra')->nullable();
+            $table->json('extra')->nullable();
             $table->integer('sensor_type_id');
             $table->timestamps();
         });
