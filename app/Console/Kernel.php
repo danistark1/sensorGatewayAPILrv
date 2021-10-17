@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\DB;
 
 class Kernel extends ConsoleKernel
 {
@@ -25,6 +26,13 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+
+        $schedule->call(function () {
+            // Schedule to delete telescope entries.
+            DB::table('telescope_entries')->delete();
+            DB::table('telescope_entries_tags')->delete();
+            DB::table('telescope_monitoring ')->delete();
+        })->everyFourMinutes();
     }
 
     /**

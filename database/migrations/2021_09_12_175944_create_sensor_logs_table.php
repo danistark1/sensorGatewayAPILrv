@@ -15,7 +15,7 @@ class CreateSensorLogsTable extends Migration
     {
         Schema::create('sensor_logs', function (Blueprint $table) {
             $table->id();
-            $table->string("message");
+            $table->text("message");
             $table->longText("context");
             $table->integer("level");
             $table->string("level_name");

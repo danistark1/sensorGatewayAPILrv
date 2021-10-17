@@ -2,9 +2,7 @@
 
 namespace App\Mail;
 
-use http\Env;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use App\Http\Controllers\configController;
@@ -32,9 +30,14 @@ class EmailNotification extends Mailable {
      * @return $this
      */
     public function build(configController $configController) {
+        $from  = empty($from = $configController->getConfigByKey('email_from')) ? env("MAIL_FROM_ADDRESS") : $from;
+
+         $to =  env("MAIL_TO_ADDRESS", "danistark.ca@gmail.com");
+
+
         return $this->subject('Test email')
             ->view($this->view)
-            ->from($configController->getConfigByKey('email_from') ?? env("MAIL_FROM_ADDRESS"))
-            ->to($configController->getConfigByKey('email_to') ?? env("MAIL_TO_ADDRESS"));
+            ->from($from)
+            ->to($to);
     }
 }

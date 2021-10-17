@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Events\SensorDataSaved;
+use App\Events\SensorReports;
 
+use App\Jobs\SendEmailNotificationJob;
 use App\Models\sensorType;
 use App\Models\sensorData;
 use Illuminate\Http\Request;
@@ -50,8 +51,25 @@ class sensorController extends Controller
        // Log::channel('customMonolog')->debug("Request Debug", [$request->all()]);
         $sensorData = sensorData::create($request->all());
         // Trigger email event.
-        event(new SensorDataSaved($sensorData));
-        return response()->json($sensorData, 201);
+        //event(new SensorReports($sensorData));
+
+//        ProcessPodcast::dispatchIf($accountActive, $podcast);
+//
+//        ProcessPodcast::dispatchUnless($accountSuspended, $podcast);
+
+//    use Illuminate\Support\Facades\Bus;
+//
+//        Bus::chain([
+//            new ProcessPodcast,
+//            new OptimizePodcast,
+//            new ReleasePodcast,
+//        ])->dispatch();
+        //SendEmailNotificationJob::dispatch($sensorData)->onQueue('database');
+        SendEmailNotificationJob::dispatch($sensorData)->onConnection('database')->onQueue('default');
+       // SensorReports::dispatch($sensorData);
+        return \response()->json("", 200);
+
+     //   return response()->json($sensorData, 201);
     }
 
     /**

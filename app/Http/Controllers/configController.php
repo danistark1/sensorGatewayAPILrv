@@ -49,8 +49,6 @@ class configController extends Controller
      * Returns a cache value.
      *
      * @param string $lookupKey
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\Routing\ResponseFactory|\Illuminate\Http\Response|void
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function getConfigByKey(string $lookupKey) {
         $cacheKey = "cache_$lookupKey";
@@ -58,7 +56,7 @@ class configController extends Controller
         if ($value === null) {
             $valueDb = sensorConfig::where('key', '=', $lookupKey)->value("value");
             if (!$valueDb) {
-                return response("$lookupKey is not found.", 404);
+                return [];
             } else {
                 // Cache the config.
                 Cache::put($cacheKey, $valueDb, 525600);
@@ -79,7 +77,7 @@ class configController extends Controller
         if ($value === null) {
             $valueDb = sensorConfig::where('value', '=', $lookupValue)->value("key");
             if (!$valueDb) {
-                return response("$lookupValue is not found.", 404);
+                return [];
             } else {
                 // Cache the config.
                 Cache::put($cacheKey, $valueDb, 525600);
