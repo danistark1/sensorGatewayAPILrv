@@ -18,9 +18,8 @@ class CreateSensorDataTable extends Migration
             $table->string('name')->index('sensorName');
             $table->json('value');
             $table->string('location')->nullable();
-            $table->string('sensorID')->index('sensorID'); // Hardware device id.
-            $table->json('extra')->nullable();
-            $table->integer('sensor_type_id');
+            $table->string('sensor_id')->index('sensorID'); // Hardware device id.
+            $table->json('attributes')->nullable();
             $table->timestamps();
         });
     }

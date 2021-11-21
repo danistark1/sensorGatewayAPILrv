@@ -16,7 +16,6 @@ class CreateSensorReportsTable extends Migration
         Schema::create('sensor_reports', function (Blueprint $table) {
             $table->id();
             $table->longText('body');
-            $table->dateTime('last_sent_date');
             $table->integer('last_sent_counter')->unsigned();
             $table->string('type');
             $table->timestamps();

@@ -18,6 +18,7 @@ class CreateSensorConfigsTable extends Migration
             $table->string('key');
             $table->string('value');
             $table->string('type');
+            $table->json('attributes')->nullable();
             $table->timestamps();
         });
     }

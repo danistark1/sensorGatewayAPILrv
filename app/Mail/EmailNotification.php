@@ -5,7 +5,7 @@ namespace App\Mail;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
-use App\Http\Controllers\configController;
+use App\Http\Controllers\SensorconfigController;
 
 class EmailNotification extends Mailable {
     use Queueable, SerializesModels;
@@ -29,7 +29,7 @@ class EmailNotification extends Mailable {
      *
      * @return $this
      */
-    public function build(configController $configController) {
+    public function build(SensorconfigController $configController) {
         $from  = empty($from = $configController->getConfigByKey('email_from')) ? env("MAIL_FROM_ADDRESS") : $from;
 
          $to =  env("MAIL_TO_ADDRESS", "danistark.ca@gmail.com");

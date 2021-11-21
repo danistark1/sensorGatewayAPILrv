@@ -29,7 +29,6 @@ class MSqlLoggingHandler extends AbstractProcessingHandler
             'level' => $record['level'],
             'level_name' => $record['level_name'],
             'channel' => $record['channel'],
-            'record_datetime' => $record['datetime']->format('Y-m-d H:i:s'),
             'extra' => json_encode($record['extra']) ?? null,
             'remote_address' => $_SERVER['REMOTE_ADDR'] ?? null,
             'user_agent' => $_SERVER['HTTP_USER_AGENT'] ?? null,

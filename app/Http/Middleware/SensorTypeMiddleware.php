@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
-use App\Models\sensorType;
+use App\Models\SensorType;
 
 class SensorTypeMiddleware
 {
@@ -11,7 +11,7 @@ class SensorTypeMiddleware
     {
         // Perform action
         $sensorTypeID = $request->get('sensor_type_id');
-        $sensorType = sensorType::find($sensorTypeID);
+        $sensorType = SensorType::find($sensorTypeID);
         if (!$sensorType) {
             return response("from middleware",433);
         }

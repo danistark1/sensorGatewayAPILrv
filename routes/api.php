@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SensorconfigController;
+use App\Http\Controllers\SensorController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,12 +27,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // Sensor Routes
 
-Route::post('/sensorgateway/lrv', [\App\Http\Controllers\sensorController::class,'store']);
-Route::get('/sensorgateway/lrv', [\App\Http\Controllers\sensorController::class,'index']);
-Route::get('/sensorgateway/lrv/{id}', [\App\Http\Controllers\sensorController::class,'show']);
+Route::post('/sensorgateway/lrv', [SensorController::class, 'saveSensorData']);
+Route::get('/sensorgateway/lrv', [SensorController::class,'index']);
+Route::get('/sensorgateway/lrv/{sensor_id}', [SensorController::class,'getSensorBySensorId']);
 
 // Config Routes
 
-Route::get('/sensorgateway/lrv/config/get/{lookupKey}', [\App\Http\Controllers\configController::class,'getConfigByKey']);
-Route::get('/sensorgateway/lrv/config/flush/all', [\App\Http\Controllers\configController::class,'clear']);
-Route::get('/sensorgateway/lrv/config/flush/key/{lookupKey}', [\App\Http\Controllers\configController::class,'delete']);
+Route::get('/sensorgateway/lrv/config/get/{lookupKey}', [SensorConfigController::class,'getConfigByKey']);
+Route::get('/sensorgateway/lrv/config/flush/all', [SensorConfigController::class,'clear']);
+Route::get('/sensorgateway/lrv/config/flush/key/{lookupKey}', [SensorConfigController::class,'delete']);
+Route::post('/sensorgateway/lrv/config', [SensorConfigController::class,'saveConfig']);

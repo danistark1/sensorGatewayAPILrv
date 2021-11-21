@@ -15,8 +15,9 @@ class CreateSensorTypesTable extends Migration
     {
         Schema::create('sensor_types', function (Blueprint $table) {
             $table->id();
-            $table->string('type')->unique();
+            $table->string('type');
             $table->longText('description')->nullable();
+            $table->integer('sensor_data_id')->unsigned();
             $table->timestamps();
         });
     }

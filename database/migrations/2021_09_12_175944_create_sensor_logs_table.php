@@ -20,7 +20,6 @@ class CreateSensorLogsTable extends Migration
             $table->integer("level");
             $table->string("level_name");
             $table->string("channel");
-            $table->dateTime("record_datetime");
             $table->longText("extra");
             $table->string("remote_address")->nullable();
             $table->string("user_agent")->nullable();
